@@ -37,7 +37,7 @@ def validate_order(order, products, customers):
     for item in order.get("items", []):
         product = find_product_by_id(products, item.get("product_id"))
 
-        if product is None:
+         if product.casefold() is None:  #casefold() in case user input is different case than product id 
             errors.append(f"Product does not exist: {item.get('product_id')}")
             continue
 
