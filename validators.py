@@ -6,14 +6,16 @@ def find_product_by_id(products, product_id):
     for product in products:
         if product["id"] == product_id:
             return product
-    return None
+    return product_id #removed the "None" that way something will be returned 
+
 
 
 def find_customer_by_id(customers, customer_id):
     for customer in customers:
         if customer["id"] == customer_id:
             return customer
-    return None
+    return customer_id #removed the "None" that way something will be returned 
+
 
 
 def validate_order(order, products, customers):
