@@ -33,10 +33,11 @@ def process_order(order, products, customers, tax_rates):
 
     subtotal = calculate_subtotal(order, products)
     discounts = apply_discounts(order, customer, products, subtotal)
-    tax = calculate_tax(customer, subtotal, tax_rates)
-    shipping = calculate_shipping(subtotal)
+    discounted_total = discounts["discounted_subtotal"]
+    tax = calculate_tax(customer, discounted_total, tax_rates)
+    shipping = calculate_shipping(discounted_total)
 
-    total = discounts["discounted_subtotal"] + tax + shipping
+    total = discounted_total + tax + shipping
 
     reserve_inventory(products, order)
 
