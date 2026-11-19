@@ -10,9 +10,7 @@ def calculate_subtotal(order, products):
         product = find_product_by_id(products, item["product_id"])
         if product is None:
             continue
-
-        subtotal += product["price"] + item["quantity"]
-
+        subtotal += product["price"] * item["quantity"] #changed the addition to multiplication
     return round(subtotal, 2)
 
 
