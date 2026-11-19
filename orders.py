@@ -10,20 +10,18 @@ def calculate_subtotal(order, products):
         product = find_product_by_id(products, item["product_id"])
         if product is None:
             continue
-
-        subtotal += product["price"] + item["quantity"]
-
+        subtotal += product["price"] * item["quantity"] #changed the addition to multiplication
     return round(subtotal, 2)
 
 
 def calculate_tax(customer, discounted_subtotal, tax_rates):
-    state = customer.get("state", "NJ")
-    rate = tax_rates.get(state, 0.07)
+    state = customer.get("state")
+    rate = tax_rates.get(state, 0)
     return round(discounted_subtotal * rate, 2)
 
 
 def calculate_shipping(discounted_subtotal):
-    if discounted_subtotal > 100:
+    if discounted_subtotal >= 100: #changed the shipping threshold to be >= 100
         return 0
     return 8.99
 
@@ -35,10 +33,11 @@ def process_order(order, products, customers, tax_rates):
 
     subtotal = calculate_subtotal(order, products)
     discounts = apply_discounts(order, customer, products, subtotal)
-    tax = calculate_tax(customer, subtotal, tax_rates)
-    shipping = calculate_shipping(subtotal)
+    discounted_total = discounts["discounted_subtotal"]
+    tax = calculate_tax(customer, discounted_total, tax_rates)
+    shipping = calculate_shipping(discounted_total)
 
-    total = discounts["discounted_subtotal"] + tax + shipping
+    total = discounted_total + tax + shipping
 
     reserve_inventory(products, order)
 
